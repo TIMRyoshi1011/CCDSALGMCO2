@@ -1,10 +1,16 @@
+// Author: 
+// Tester: Marcus Timothy V. Ramos
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "graph.h"
-#include "traversal.h"
+#include "traversal.c"                                  //<-------------- changed to include traversal.c and removed graph.h
 
-// Helper to build output filenames
+/* Helper: to build output filenames
+ * @param input - The input filename.
+ * @param suffix - The suffix to append before the extension.
+ * @param out - The output buffer for the constructed filename.
+ */
 void build_output_filename(const char *input, const char *suffix, char *out) {
     // Remove extension
     const char *dot = strrchr(input, '.');

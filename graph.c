@@ -1,9 +1,16 @@
+// Author: 
+// Tester: Marcus Timothy V. Ramos
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "graph.h"
 
-// Helper: Find index of vertex by label, or -1 if not found
+/* Helper: This function finds the index of vertex by label
+ * @param *g - Pointer to the graph structure.
+ * @param *label - The label of the vertex to find.
+ * @return index (i) if found, -1 otherwise.
+ */
 int FindVertexIndex(const Graph *g, const char *label) {
     for (int i = 0; i < g->numVertices; ++i) {
         if (strcmp(g->vertices[i].label, label) == 0) {
@@ -13,7 +20,9 @@ int FindVertexIndex(const Graph *g, const char *label) {
     return -1;
 }
 
-// Helper: Free all adjacency lists
+/* Helper: Free all adjacency lists
+ * @param *g - Pointer to the graph structure.
+ */
 void FreeGraph(Graph *g) {
     for (int i = 0; i < g->numVertices; ++i) {
         AdjListNode *curr = g->vertices[i].adjList;
@@ -27,7 +36,11 @@ void FreeGraph(Graph *g) {
     g->numVertices = 0;
 }
 
-// Read input file and build graph
+/* Read input file and build graph
+ * @param *filename - The name of the input file.
+ * @param *g - Pointer to the graph structure
+ * @return 1 if successful, 0 otherwise.
+ */
 int ReadInputFile(const char *filename, Graph *g) {
     FILE *fp = fopen(filename, "r");
     if (!fp) return 0;
@@ -100,7 +113,11 @@ int ReadInputFile(const char *filename, Graph *g) {
 // Use a static context for qsort
 static const Graph *g_qsort_ctx = NULL;
 
-// Helper for qsort: compare vertex labels
+/* Helper for qsort: compare vertex labels for sorting
+ * @param *a - Pointer to the first vertex index.
+ * @param *b - Pointer to the second vertex index.
+ * @return negative if a < b, positive if a > b, zero if equal.
+ */
 static int cmp_vertex_label(const void *a, const void *b) {
     int ia = *(const int *)a, ib = *(const int *)b;
     return strcmp(g_qsort_ctx->vertices[ia].label, g_qsort_ctx->vertices[ib].label);
@@ -108,6 +125,12 @@ static int cmp_vertex_label(const void *a, const void *b) {
 
 // Helper for qsort: compare edge tuples (by start, then end label)
 typedef struct { int u, v; } EdgeTuple;
+
+/* Helper for qsort: compare edge tuples
+ * @param *a - Pointer to the first edge tuple.
+ * @param *b - Pointer to the second edge tuple.
+ * @return negative if a < b, positive if a > b, zero if equal.
+*/
 static int cmp_edge_tuple(const void *a, const void *b) {
     const EdgeTuple *ea = (const EdgeTuple *)a, *eb = (const EdgeTuple *)b;
     int c = strcmp(g_qsort_ctx->vertices[ea->u].label, g_qsort_ctx->vertices[eb->u].label);
@@ -115,7 +138,11 @@ static int cmp_edge_tuple(const void *a, const void *b) {
     return strcmp(g_qsort_ctx->vertices[ea->v].label, g_qsort_ctx->vertices[eb->v].label);
 }
 
-// Output File #1: SET
+/* Output File #1: SET
+ * This function creates the text file containing the set of vertices V(G) and set of edges E(G)
+ * @param *filename - The name of the output file.
+ * @param *g - Pointer to the graph structure.
+ */
 void ProduceOutputFile1(const char *filename, const Graph *g) {
     FILE *fp = fopen(filename, "w");
     if (!fp) return;
@@ -156,7 +183,11 @@ void ProduceOutputFile1(const char *filename, const Graph *g) {
     fclose(fp);
 }
 
-// Output File #2: DEGREE
+/* Output File #2: DEGREE
+ * This function creates the text file containing the list of vertex IDs with the corresponding degree for each vertex. 
+ * @param *filename - The name of the output file.
+ * @param *g - Pointer to the graph structure.
+ */
 void ProduceOutputFile2(const char *filename, const Graph *g) {
     FILE *fp = fopen(filename, "w");
     if (!fp) return;
@@ -170,7 +201,11 @@ void ProduceOutputFile2(const char *filename, const Graph *g) {
     fclose(fp);
 }
 
-// Output File #3: LIST
+/* Output File #3: LIST
+ * This function produces the adjacency list representation of the graph in a text file.
+ * @param *filename - The name of the output file.
+ * @param *g - Pointer to the graph structure.
+ */
 void ProduceOutputFile3(const char *filename, const Graph *g) {
     FILE *fp = fopen(filename, "w");
     if (!fp) return;
@@ -193,7 +228,11 @@ void ProduceOutputFile3(const char *filename, const Graph *g) {
     fclose(fp);
 }
 
-// Output File #4: MATRIX
+/* Output File #4: MATRIX
+ * This function produces the adjacency matrix representation of the graph in a text file.
+ * @param *filename - The name of the output file.
+ * @param *g - Pointer to the graph structure.
+ */
 void ProduceOutputFile4(const char *filename, const Graph *g) {
     FILE *fp = fopen(filename, "w");
     if (!fp) return;
